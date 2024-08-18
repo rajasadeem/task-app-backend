@@ -7,6 +7,7 @@ const userValidation = {
       full_name: Joi.string().trim(),
     }),
   },
+
   delete: {
     params: Joi.object({
       id: Joi.number().required(),

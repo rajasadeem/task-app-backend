@@ -1,13 +1,11 @@
 const userRepository = {
-  add: () => {
-    return `INSERT INTO users (user_name, full_name, password, created_at, updated_at) VALUES ($1, $2, $3, $4, $5) RETURNING *`;
-  },
-  getByUserName: () => {
-    return `SELECT * FROM users WHERE user_name = $1`;
-  },
-  getUserById: () => {
-    return `SELECT * FROM users WHERE id = $1`;
-  },
+  add: () =>
+    `INSERT INTO users (user_name, full_name, password, created_at, updated_at) VALUES ($1, $2, $3, $4, $5) RETURNING *`,
+
+  getByUserName: () => `SELECT * FROM users WHERE user_name = $1`,
+
+  getUserById: () => `SELECT * FROM users WHERE id = $1`,
+
   updateUser: (fields: Record<string, any>, id: number) => {
     fields.updated_at = new Date();
 
@@ -23,9 +21,7 @@ const userRepository = {
     };
   },
 
-  deleteUser: () => {
-    return `DELETE FROM users WHERE id = $1`;
-  },
+  deleteUser: () => `DELETE FROM users WHERE id = $1`,
 };
 
 export default userRepository;
