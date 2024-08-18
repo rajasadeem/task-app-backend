@@ -5,7 +5,6 @@ const userValidation = {
     body: Joi.object({
       user_name: Joi.string().trim(),
       full_name: Joi.string().trim(),
-      password: Joi.string().trim(),
     }),
   },
   delete: {
