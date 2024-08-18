@@ -9,7 +9,6 @@ const userRepository = {
     return `SELECT * FROM users WHERE id = $1`;
   },
   updateUser: (fields: Record<string, any>, id: number) => {
-    // Add updated_at field with the current timestamp
     fields.updated_at = new Date();
 
     const setClause = Object.keys(fields)
@@ -19,7 +18,7 @@ const userRepository = {
     const values = [...Object.values(fields), id];
 
     return {
-      text: `UPDATE users SET ${setClause} WHERE id = $${values.length} RETURNING *`,
+      query: `UPDATE users SET ${setClause} WHERE id = $${values.length} RETURNING *`,
       values: values,
     };
   },

@@ -9,8 +9,12 @@ const authController = {
    */
   signup: catchAsync(async (req: Request, res: Response) => {
     const { user_name, full_name, password } = req.body;
-    await userService.createUser({ user_name, full_name, password });
-    return res.status(201).json({ message: 'User created successfully' });
+    const user = await userService.createUser({
+      user_name,
+      full_name,
+      password,
+    });
+    return res.status(201).json({ data: user });
   }),
   /**
    * Login user.

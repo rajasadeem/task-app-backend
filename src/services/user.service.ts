@@ -22,13 +22,14 @@ const userService = {
       );
     const hashedPassword = await hashPassword(password);
 
-    await client.query(userRepository.add(), [
+    const newUser = await client.query(userRepository.add(), [
       user_name,
       full_name,
       hashedPassword,
       new Date(), // created_at
       new Date(), // updated_at
     ]);
+    return newUser.rows[0];
   },
   /**
    *
@@ -51,12 +52,18 @@ const userService = {
     const userExist = await client.query(userRepository.getUserById(), [id]);
     if (!userExist.rows.length) throw new ApiError(404, 'User not found.');
 
-    const { text, values } = userRepository.updateUser(user, id);
+    const { query, values } = userRepository.updateUser(user, id);
 
-    const updatedUser = await client.query(text, values);
+    const updatedUser = await client.query(query, values);
 
     const { password: _password, ...userWithoutPassword } = updatedUser.rows[0];
     return { ...userWithoutPassword };
+  },
+  deleteUser: async (id: number) => {
+    const userExist = await client.query(userRepository.getUserById(), [id]);
+    if (!userExist.rows.length) throw new ApiError(404, 'User not found.');
+
+    return await client.query(userRepository.deleteUser(), [id]);
   },
 };
 
