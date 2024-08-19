@@ -1,4 +1,4 @@
-import { TaskFilters, TaskPriority, TaskStatus } from '../types';
+import { TaskFilters } from '../types';
 
 const taskRepository = {
   add: () =>
