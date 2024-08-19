@@ -26,8 +26,6 @@ pnpm migrate:up
 pnpm build
 ```
 
-then,
-
 ```
 pnpm start
 ```
