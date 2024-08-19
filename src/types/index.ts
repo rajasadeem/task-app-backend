@@ -39,7 +39,12 @@ export type CreateTask = {
   user_id: number;
   title: string;
   description: string;
-  status: TaskStatus;
   priority: TaskPriority;
   due_date: Date;
+};
+
+export type TaskFilters = {
+  status?: TaskStatus;
+  priority?: TaskPriority;
+  due_date?: Date;
 };

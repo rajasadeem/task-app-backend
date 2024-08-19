@@ -21,7 +21,6 @@ const userService = {
         'This username is already taken. Please choose a different one.',
       );
     const hashedPassword = await hashPassword(password);
-
     const newUser = await client.query(userRepository.add(), [
       user_name,
       full_name,
@@ -51,18 +50,19 @@ const userService = {
   updateUser: async (id: number, user: Partial<User>) => {
     const userExist = await client.query(userRepository.getUserById(), [id]);
     if (!userExist.rows.length) throw new ApiError(404, 'User not found.');
-
     const { query, values } = userRepository.updateUser(user, id);
-
     const updatedUser = await client.query(query, values);
-
     const { password: _password, ...userWithoutPassword } = updatedUser.rows[0];
     return { ...userWithoutPassword };
   },
+  /**
+   *
+   * @param id
+   * @returns Delete user
+   */
   deleteUser: async (id: number) => {
     const userExist = await client.query(userRepository.getUserById(), [id]);
     if (!userExist.rows.length) throw new ApiError(404, 'User not found.');
-
     return await client.query(userRepository.deleteUser(), [id]);
   },
 };

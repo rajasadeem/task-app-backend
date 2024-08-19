@@ -1,7 +1,6 @@
 import { NextFunction, Request, Response } from 'express';
 import authService from '../services/auth.service';
 import logger from '../config/logger';
-import { User } from '../types';
 
 const auth = async (req: Request, res: Response, next: NextFunction) => {
   try {

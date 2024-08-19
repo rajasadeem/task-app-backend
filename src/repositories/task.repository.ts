@@ -1,10 +1,10 @@
-import { TaskPriority, TaskStatus } from '../types';
+import { TaskFilters, TaskPriority, TaskStatus } from '../types';
 
 const taskRepository = {
   add: () =>
-    'INSERT INTO tasks (user_id, title, description, status, priority, due_date, created_at, updated_at, completed_at) VALUES ($1, $2, $3, $4,$5, $6, $7, $8, $9)',
+    'INSERT INTO tasks (user_id, title, description, priority, due_date, created_at, updated_at) VALUES ($1, $2, $3, $4,$5, $6, $7) RETURNING *',
 
-  getById: () => 'SELECT * FROM tasks WHERE id = $1',
+  getById: () => `SELECT * FROM tasks WHERE id = $1`,
 
   updateTask: (fields: Record<string, any>, id: number) => {
     fields.updated_at = new Date();
@@ -21,17 +21,13 @@ const taskRepository = {
     };
   },
 
-  deleteTask: () => 'DELETE FROM tasks WHERE id = $1',
+  deleteTask: () => `DELETE FROM tasks WHERE id = $1`,
 
-  getTasksByUser: (
+  getTasksOfUser: (
     userId: number,
     page: number,
     pageSize: number,
-    filters: {
-      status?: TaskStatus;
-      priority?: TaskPriority;
-      dueDate?: Date;
-    },
+    filters: TaskFilters,
   ) => {
     const offset = (page - 1) * pageSize;
 
@@ -55,9 +51,9 @@ const taskRepository = {
       values.push(filters.priority);
     }
 
-    if (filters.dueDate) {
+    if (filters.due_date) {
       filterConditions.push('due_date = $' + (values.length + 1));
-      values.push(filters.dueDate); // 'YYYY-MM-DD' format
+      values.push(filters.due_date); // 'YYYY-MM-DD' format
     }
 
     if (filterConditions.length > 0) {
