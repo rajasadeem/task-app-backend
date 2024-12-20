@@ -4,11 +4,11 @@ import config from './env';
 const { Client } = pg;
 
 const client = new Client({
-  user: 'postgres',
-  password: 'admin',
-  host: 'localhost',
-  port: 5432,
-  database: 'task_app',
+  user: config.DB.USERNAME,
+  password: config.DB.PASSWORD,
+  host: config.DB.HOST,
+  port: Number(config.DB.PORT),
+  database: config.DB.NAME,
 });
 
 export default client;
